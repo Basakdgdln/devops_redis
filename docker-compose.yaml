@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  redis:
+    image: redis:alpine
+    ports:
+     - "6379:6379"
+
+  db:
+    container_name: postgresql
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: user
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+
+volumes:
+  db_data:
+networks:
+  my_network:
+    driver: bridge
